@@ -52,16 +52,16 @@ USING gin(to_tsvector('english', coalesce(title, '') || ' ' || coalesce(content,
 
 ### 1. Use Specific Column Selection
 ```typescript
-// ❌ Avoid selecting all columns
+// Bad: Avoid selecting all columns
 supabase.from('agents').select('*')
 
-// ✅ Select only needed columns
+// Good: Select only needed columns
 supabase.from('agents').select('id, name, description, rating_average')
 ```
 
 ### 2. Optimize Joins
 ```typescript
-// ✅ Use efficient joins with specific columns
+// Good: Use efficient joins with specific columns
 supabase
   .from('agents')
   .select(`
@@ -73,7 +73,7 @@ supabase
 
 ### 3. Use Pagination Effectively
 ```typescript
-// ✅ Use offset and limit for pagination
+// Good: Use offset and limit for pagination
 supabase
   .from('agents')
   .select('id, name, rating_average')
@@ -82,7 +82,7 @@ supabase
 
 ### 4. Optimize Count Queries
 ```typescript
-// ✅ Use head: true for count-only queries
+// Good: Use head: true for count-only queries
 supabase
   .from('agents')
   .select('*', { count: 'exact', head: true })
@@ -91,7 +91,7 @@ supabase
 
 ### 5. Batch Related Queries
 ```typescript
-// ✅ Use Promise.all for parallel queries
+// Good: Use Promise.all for parallel queries
 const [agents, categories, stats] = await Promise.all([
   supabase.from('agents').select('*').limit(10),
   supabase.from('categories').select('*'),
