@@ -1,0 +1,503 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Pure dark palette - Muted Teal accent */
+    --background: #000000;
+    --background-subtle: #0a0a0a;
+    --surface: #111111;
+    --border: #1a1a1a;
+    --border-hover: #2a2a2a;
+
+    /* Text colors */
+    --text-primary: #fafafa;
+    --text-secondary: #888888;
+    --text-tertiary: #555555;
+
+    /* Accent - Muted Teal */
+    --accent: #14b8a6;
+    --accent-muted: rgba(20, 184, 166, 0.15);
+    --accent-glow: 0 0 20px rgba(20, 184, 166, 0.25);
+
+    /* Border radius */
+    --radius: 0.5rem;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Selection */
+  ::selection {
+    background: rgba(20, 184, 166, 0.3);
+    color: var(--text-primary);
+  }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    @apply w-2 h-2;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-border rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-border-hover;
+  }
+
+  /* Focus styles */
+  :focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--background), 0 0 0 4px rgba(20, 184, 166, 0.5);
+  }
+}
+
+@layer components {
+  /* Terminal-style command box */
+  .terminal-box {
+    @apply bg-background border border-border rounded-lg font-mono;
+    @apply hover:border-border-hover transition-colors duration-200;
+    overflow: hidden;
+    max-width: 100%;
+  }
+
+  .terminal-box-glow {
+    @apply terminal-box;
+    box-shadow: var(--accent-glow);
+  }
+
+  /* Card styling */
+  .card-surface {
+    @apply bg-surface border border-border rounded-lg;
+    @apply hover:border-border-hover transition-colors duration-200;
+  }
+
+  /* Table row hover */
+  .table-row-hover {
+    @apply transition-colors duration-150 cursor-pointer;
+  }
+
+  .table-row-hover:hover {
+    background: rgba(17, 17, 17, 0.5);
+  }
+
+  /* Skeleton shimmer */
+  .skeleton {
+    background: linear-gradient(
+      90deg,
+      var(--surface) 0%,
+      var(--border) 50%,
+      var(--surface) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite linear;
+  }
+
+  /* Badge styles */
+  .badge-default {
+    @apply inline-flex items-center px-2 py-0.5 rounded text-xs font-mono;
+    @apply bg-surface border border-border text-text-secondary;
+  }
+
+  .badge-accent {
+    @apply inline-flex items-center px-2 py-0.5 rounded text-xs font-mono text-accent;
+    background: var(--accent-muted);
+    border: 1px solid rgba(20, 184, 166, 0.3);
+  }
+
+  /* Link styles */
+  .link-default {
+    @apply text-text-secondary hover:text-text-primary transition-colors duration-150;
+  }
+
+  .link-accent {
+    @apply text-accent transition-colors duration-150;
+  }
+
+  .link-accent:hover {
+    color: rgba(20, 184, 166, 0.8);
+  }
+
+  /* Stat number */
+  .stat-number {
+    @apply text-2xl font-bold font-mono text-text-primary;
+  }
+
+  /* Section divider */
+  .divider {
+    @apply h-px bg-border w-full my-8;
+  }
+
+  /* ASCII art container */
+  .ascii-art {
+    @apply text-accent whitespace-pre leading-none;
+    /* Base size for extra-small screens (<375px) */
+    font-size: 0.35rem;
+    letter-spacing: 0;
+    font-variant-ligatures: none;
+    -webkit-font-smoothing: antialiased;
+    /* Use system monospace fonts that properly support Unicode block characters */
+    font-family: "Menlo", "Monaco", "Cascadia Mono", "Consolas", "Liberation Mono", "Courier New", monospace;
+  }
+
+  /* Small screens (375px-449px) - intermediate size */
+  @media (min-width: 375px) {
+    .ascii-art {
+      font-size: 0.42rem;
+    }
+  }
+
+  /* Medium-small screens (450px+) */
+  @media (min-width: 450px) {
+    .ascii-art {
+      font-size: 0.5rem;
+    }
+  }
+
+  @screen sm {
+    .ascii-art {
+      font-size: 0.625rem;
+    }
+  }
+
+  @screen md {
+    .ascii-art {
+      font-size: 0.75rem;
+    }
+  }
+}
+
+@layer utilities {
+  /* Prevent horizontal scroll */
+  html,
+  body {
+    @apply overflow-x-hidden;
+  }
+
+  /* Glow effect */
+  .glow {
+    box-shadow: var(--accent-glow);
+  }
+
+  .glow-sm {
+    box-shadow: 0 0 10px rgba(20, 184, 166, 0.15);
+  }
+
+  /* Text gradient */
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, var(--accent) 0%, #00ffff 100%);
+  }
+
+  /* Fade animations */
+  .fade-in {
+    animation: fade-in 0.3s ease-out;
+  }
+
+  .slide-up {
+    animation: slide-up 0.4s ease-out;
+  }
+
+  /* Mobile responsive padding */
+  @media (max-width: 640px) {
+    .container {
+      @apply px-4;
+    }
+  }
+
+  /* Line clamp */
+  .line-clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Hide scrollbar but keep functionality */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Keyboard shortcut indicator */
+  .kbd {
+    @apply inline-flex items-center justify-center;
+    @apply h-5 min-w-5 px-1.5 rounded;
+    @apply bg-surface border border-border;
+    @apply text-xs font-mono text-text-tertiary;
+  }
+}
+
+/* Keyframes */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Markdown content styling - Enhanced */
+.prose-dark {
+  color: var(--text-primary);
+  line-height: 1.7;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.prose-dark > *:first-child {
+  @apply mt-0;
+}
+
+.prose-dark > *:last-child {
+  @apply mb-0;
+}
+
+.prose-dark h1,
+.prose-dark h2,
+.prose-dark h3,
+.prose-dark h4,
+.prose-dark h5,
+.prose-dark h6 {
+  color: var(--text-primary);
+  @apply font-semibold leading-tight;
+}
+
+.prose-dark h1 {
+  @apply text-2xl md:text-3xl mt-10 mb-4;
+}
+
+.prose-dark h2 {
+  @apply text-xl md:text-2xl mt-8 mb-3;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.prose-dark h3 {
+  @apply text-lg md:text-xl mt-6 mb-3;
+}
+
+.prose-dark h4 {
+  @apply text-base md:text-lg mt-6 mb-2;
+}
+
+.prose-dark h1:first-child,
+.prose-dark h2:first-child,
+.prose-dark h3:first-child,
+.prose-dark h4:first-child {
+  @apply mt-0;
+}
+
+.prose-dark p {
+  color: var(--text-secondary);
+  @apply mb-4;
+  line-height: 1.7;
+}
+
+.prose-dark a {
+  color: var(--accent);
+  @apply transition-colors;
+}
+
+.prose-dark a:hover {
+  @apply underline;
+  color: rgba(20, 184, 166, 0.8);
+}
+
+/* Inline code */
+.prose-dark code {
+  @apply px-1.5 py-0.5 rounded text-sm font-mono;
+  background: var(--surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  word-break: break-all;
+}
+
+/* Code blocks */
+.prose-dark pre {
+  @apply border rounded-lg p-4 overflow-x-auto my-6;
+  background: var(--background-subtle);
+  border-color: var(--border);
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.prose-dark pre code {
+  @apply p-0 text-sm;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+/* Lists */
+.prose-dark ul,
+.prose-dark ol {
+  @apply my-4 pl-6;
+}
+
+.prose-dark ul {
+  @apply list-disc;
+}
+
+.prose-dark ol {
+  @apply list-decimal;
+}
+
+.prose-dark li {
+  color: var(--text-secondary);
+  @apply mb-2;
+  line-height: 1.6;
+}
+
+.prose-dark li > ul,
+.prose-dark li > ol {
+  @apply mt-2 mb-0;
+}
+
+.prose-dark li > p {
+  @apply mb-2;
+}
+
+/* Nested list indentation */
+.prose-dark ul ul,
+.prose-dark ol ol,
+.prose-dark ul ol,
+.prose-dark ol ul {
+  @apply ml-4;
+}
+
+/* Blockquotes */
+.prose-dark blockquote {
+  @apply border-l-4 pl-4 my-6 py-1;
+  border-color: var(--border);
+  background: var(--surface);
+  @apply rounded-r-lg;
+}
+
+.prose-dark blockquote p {
+  color: var(--text-secondary);
+  @apply italic mb-0;
+}
+
+/* Horizontal rules */
+.prose-dark hr {
+  @apply my-8;
+  border-color: var(--border);
+}
+
+/* Tables - scrollable on mobile */
+.prose-dark table {
+  @apply my-6 border-collapse text-sm;
+  display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.prose-dark th,
+.prose-dark td {
+  @apply border px-4 py-2.5 text-left;
+  border-color: var(--border);
+}
+
+.prose-dark th {
+  @apply font-medium text-text-primary;
+  background: var(--surface);
+}
+
+.prose-dark td {
+  color: var(--text-secondary);
+}
+
+.prose-dark tr:hover td {
+  background: var(--surface);
+}
+
+/* Strong and emphasis */
+.prose-dark strong {
+  @apply font-semibold;
+  color: var(--text-primary);
+}
+
+.prose-dark em {
+  @apply italic;
+}
+
+/* Images */
+.prose-dark img {
+  @apply rounded-lg border my-6 max-w-full;
+  border-color: var(--border);
+}
+
+/* Task lists (GFM) */
+.prose-dark input[type="checkbox"] {
+  @apply mr-2;
+  accent-color: var(--accent);
+}
+
+/* Definition lists */
+.prose-dark dl {
+  @apply my-4;
+}
+
+.prose-dark dt {
+  @apply font-semibold text-text-primary mt-4;
+}
+
+.prose-dark dd {
+  @apply pl-4 text-text-secondary;
+}

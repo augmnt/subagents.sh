@@ -1,0 +1,58 @@
+# Supabase configuration file for the Subagents platform
+
+project_id = "your-project-id"
+
+[api]
+port = 54321
+schemas = ["public", "storage", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[db]
+port = 54322
+major_version = 15
+
+[studio]
+port = 54323
+
+[inbucket]
+port = 54324
+
+[storage]
+file_size_limit = "50MiB"
+image_transformation = { enabled = true }
+
+[auth]
+# Auth settings
+site_url = "http://localhost:3000"
+additional_redirect_urls = ["https://localhost:3000"]
+jwt_expiry = 3600
+
+[auth.email]
+enable_signup = true
+double_confirm_changes = true
+enable_confirmations = true
+
+[auth.external.github]
+enabled = true
+client_id = "env(GITHUB_CLIENT_ID)"
+secret = "env(GITHUB_SECRET)"
+redirect_uri = "http://localhost:54321/auth/v1/callback"
+
+
+[analytics]
+port = 54327
+vector_port = 54328
+# Setup BigQuery project to enable log streaming
+gcp_project_id = ""
+gcp_project_number = ""
+gcp_jwt_path = "supabase/gcp.json"
+
+[functions.search_agents]
+verify_jwt = false
+
+[functions.sync_github]
+verify_jwt = true
+
+[functions.trending_agents]
+verify_jwt = false

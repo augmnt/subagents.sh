@@ -1,0 +1,258 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+          - staging
+          - production
+      skip_tests:
+        description: 'Skip tests before deployment'
+        required: false
+        default: false
+        type: boolean
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ inputs.environment || 'production' }}
+  cancel-in-progress: false
+
+env:
+  NODE_VERSION: '20'
+  FORCE_COLOR: 3
+
+jobs:
+  pre-deploy-checks:
+    name: Pre-deployment Checks
+    runs-on: ubuntu-latest
+    outputs:
+      should_deploy: ${{ steps.check.outputs.should_deploy }}
+      environment: ${{ steps.check.outputs.environment }}
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check deployment conditions
+        id: check
+        run: |
+          ENV="${{ inputs.environment || 'production' }}"
+          SKIP_TESTS="${{ inputs.skip_tests || 'false' }}"
+          
+          # Check if this is a hotfix or emergency deployment
+          if [[ "${{ github.event.head_commit.message }}" =~ \[hotfix\]|\[emergency\] ]]; then
+            echo "Emergency deployment detected"
+            echo "should_deploy=true" >> $GITHUB_OUTPUT
+          elif [[ "$SKIP_TESTS" == "true" ]]; then
+            echo "Tests skipped by user input"
+            echo "should_deploy=true" >> $GITHUB_OUTPUT
+          else
+            echo "Normal deployment - tests required"
+            echo "should_deploy=false" >> $GITHUB_OUTPUT
+          fi
+          
+          echo "environment=$ENV" >> $GITHUB_OUTPUT
+
+      - name: Generate version
+        id: version
+        run: |
+          VERSION=$(date +%Y%m%d%H%M%S)-$(git rev-parse --short HEAD)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Generated version: $VERSION"
+
+  test-before-deploy:
+    name: Run Tests Before Deploy
+    needs: pre-deploy-checks
+    if: needs.pre-deploy-checks.outputs.should_deploy == 'false'
+    uses: ./.github/workflows/test.yml
+    secrets: inherit
+
+  build-and-deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    needs: [pre-deploy-checks, test-before-deploy]
+    if: always() && (needs.test-before-deploy.result == 'success' || needs.pre-deploy-checks.outputs.should_deploy == 'true')
+    environment: 
+      name: ${{ needs.pre-deploy-checks.outputs.environment }}
+      url: ${{ steps.deploy.outputs.preview-url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run build analysis
+        env:
+          ANALYZE: 'true'
+        run: npm run build
+
+      - name: Upload bundle analysis
+        uses: actions/upload-artifact@v4
+        with:
+          name: bundle-analysis-${{ needs.pre-deploy-checks.outputs.version }}
+          path: .next/analyze/
+          retention-days: 30
+
+      - name: Deploy to Vercel
+        id: deploy
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: ${{ needs.pre-deploy-checks.outputs.environment == 'production' && '--prod' || '' }}
+          scope: ${{ secrets.VERCEL_ORG_ID }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-comment: true
+
+      - name: Create Sentry release
+        uses: getsentry/action-release@v1
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+        with:
+          environment: ${{ needs.pre-deploy-checks.outputs.environment }}
+          version: ${{ needs.pre-deploy-checks.outputs.version }}
+          sourcemaps: '.next/static'
+
+      - name: Update deployment status in Supabase
+        run: |
+          curl -X POST "${{ secrets.SUPABASE_URL }}/rest/v1/deployments" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}" \
+            -H "Content-Type: application/json" \
+            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
+            -d '{
+              "version": "${{ needs.pre-deploy-checks.outputs.version }}",
+              "environment": "${{ needs.pre-deploy-checks.outputs.environment }}",
+              "status": "deployed",
+              "url": "${{ steps.deploy.outputs.preview-url }}",
+              "commit_sha": "${{ github.sha }}",
+              "deployed_at": "'$(date -u +%Y-%m-%dT%H:%M:%S.%3NZ)'",
+              "deployed_by": "${{ github.actor }}"
+            }'
+
+  post-deploy-tests:
+    name: Post-deployment Tests
+    runs-on: ubuntu-latest
+    needs: [build-and-deploy, pre-deploy-checks]
+    if: success()
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright
+        run: npx playwright install --with-deps chromium
+
+      - name: Run smoke tests
+        env:
+          PLAYWRIGHT_BASE_URL: ${{ needs.build-and-deploy.outputs.preview-url }}
+        run: npx playwright test --grep=@smoke
+
+      - name: Run Lighthouse audit
+        uses: treosh/lighthouse-ci-action@v11
+        with:
+          configPath: './lighthouserc.json'
+          urls: |
+            ${{ needs.build-and-deploy.outputs.preview-url }}
+            ${{ needs.build-and-deploy.outputs.preview-url }}/browse
+            ${{ needs.build-and-deploy.outputs.preview-url }}/submit
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+
+      - name: Security scan
+        uses: securecodewarrior/github-action-add-sarif@v1
+        with:
+          sarif-file: 'security-scan-results.sarif'
+
+  rollback:
+    name: Rollback on Failure
+    runs-on: ubuntu-latest
+    needs: [build-and-deploy, post-deploy-tests]
+    if: failure() && needs.build-and-deploy.result == 'success'
+    steps:
+      - name: Rollback deployment
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod --rollback'
+          scope: ${{ secrets.VERCEL_ORG_ID }}
+
+      - name: Notify team of rollback
+        uses: 8398a7/action-slack@v3
+        with:
+          status: failure
+          text: |
+            🚨 Deployment rolled back due to post-deploy test failures
+            Environment: ${{ needs.pre-deploy-checks.outputs.environment }}
+            Version: ${{ needs.pre-deploy-checks.outputs.version }}
+            Commit: ${{ github.sha }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  notify-success:
+    name: Notify Success
+    runs-on: ubuntu-latest
+    needs: [post-deploy-tests, pre-deploy-checks, build-and-deploy]
+    if: success()
+    steps:
+      - name: Notify team of successful deployment
+        uses: 8398a7/action-slack@v3
+        with:
+          status: success
+          text: |
+            ✅ Successful deployment to ${{ needs.pre-deploy-checks.outputs.environment }}
+            Version: ${{ needs.pre-deploy-checks.outputs.version }}
+            URL: ${{ needs.build-and-deploy.outputs.preview-url }}
+            Commit: ${{ github.sha }}
+            Deployed by: ${{ github.actor }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Create GitHub release
+        if: needs.pre-deploy-checks.outputs.environment == 'production'
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ needs.pre-deploy-checks.outputs.version }}
+          release_name: Release v${{ needs.pre-deploy-checks.outputs.version }}
+          body: |
+            ## Deployment Summary
+            
+            - **Environment**: ${{ needs.pre-deploy-checks.outputs.environment }}
+            - **Version**: ${{ needs.pre-deploy-checks.outputs.version }}
+            - **URL**: ${{ needs.build-and-deploy.outputs.preview-url }}
+            - **Commit**: ${{ github.sha }}
+            - **Deployed by**: ${{ github.actor }}
+            
+            ## Changes
+            ${{ github.event.head_commit.message }}
+          draft: false
+          prerelease: false

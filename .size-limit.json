@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Client bundle (First Load JS)",
+    "path": ".next/static/chunks/pages/**/*.js",
+    "limit": "130 KB",
+    "webpack": false,
+    "gzip": true
+  },
+  {
+    "name": "Main bundle",
+    "path": ".next/static/chunks/pages/_app-*.js",
+    "limit": "50 KB",
+    "webpack": false,
+    "gzip": true
+  },
+  {
+    "name": "Home page bundle",
+    "path": ".next/static/chunks/pages/index-*.js",
+    "limit": "20 KB",
+    "webpack": false,
+    "gzip": true
+  },
+  {
+    "name": "Shared chunks",
+    "path": ".next/static/chunks/*.js",
+    "limit": "100 KB",
+    "webpack": false,
+    "gzip": true
+  }
+]

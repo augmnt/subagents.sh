@@ -1,0 +1,100 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+node_modules/
+**/node_modules/
+
+# build output
+dist/
+**/dist/
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files (can opt-in for committing if needed)
+.env*
+!.env.example
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# Monitoring and analytics
+.sentry-*
+sentry.properties
+
+# Bundle analysis
+analyze/
+.analyze/
+
+# Performance reports
+lighthouse-report.html
+performance-report.json
+
+# Security scanning
+security-scan-results.sarif
+
+# Backup files
+*.backup
+backup/
+
+# Logs
+logs/
+*.log
+
+# Temp files
+temp/
+tmp/
+.tmp/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+Thumbs.db
+
+# Runtime
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+.nyc_output/
+
+# Test artifacts
+test-results/
+playwright-report/
+test-report.html
+
+# Local development files
+.claude/
+supabase/.temp/

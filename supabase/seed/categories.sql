@@ -1,0 +1,28 @@
+-- Seed data for categories
+INSERT INTO public.categories (name, description, slug, icon, color) VALUES
+    ('Development Tools', 'Code editors, IDEs, build tools, and development utilities', 'development-tools', 'Code', '#3b82f6'),
+    ('Data Science', 'Machine learning, data analysis, and scientific computing tools', 'data-science', 'BarChart3', '#8b5cf6'),
+    ('Automation', 'Workflow automation, CI/CD, and task runners', 'automation', 'Zap', '#f59e0b'),
+    ('Web Development', 'Frontend frameworks, backend tools, and web utilities', 'web-development', 'Globe', '#10b981'),
+    ('Mobile Development', 'iOS, Android, and cross-platform mobile development tools', 'mobile-development', 'Smartphone', '#ec4899'),
+    ('DevOps', 'Container management, monitoring, and infrastructure tools', 'devops', 'Server', '#ef4444'),
+    ('Security', 'Security scanning, vulnerability testing, and compliance tools', 'security', 'Shield', '#dc2626'),
+    ('Design', 'UI/UX design tools, prototyping, and creative utilities', 'design', 'Palette', '#7c3aed'),
+    ('Documentation', 'Documentation generators, API docs, and technical writing tools', 'documentation', 'BookOpen', '#059669'),
+    ('Testing', 'Testing frameworks, quality assurance, and test automation', 'testing', 'CheckCircle', '#0ea5e9'),
+    ('Database', 'Database management, migration tools, and data utilities', 'database', 'Database', '#6366f1'),
+    ('Productivity', 'Task management, note-taking, and personal productivity tools', 'productivity', 'Clock', '#f97316'),
+    ('Communication', 'Chat bots, notification systems, and team collaboration tools', 'communication', 'MessageCircle', '#84cc16'),
+    ('Analytics', 'Monitoring, tracking, and business intelligence tools', 'analytics', 'TrendingUp', '#06b6d4'),
+    ('Content Management', 'CMS, blogging platforms, and content creation tools', 'content-management', 'FileText', '#8b5cf6'),
+    ('E-commerce', 'Online store builders, payment processing, and retail tools', 'ecommerce', 'ShoppingCart', '#f59e0b'),
+    ('API Tools', 'API development, testing, and integration utilities', 'api-tools', 'Plug', '#10b981'),
+    ('Gaming', 'Game development tools, engines, and gaming utilities', 'gaming', 'Gamepad2', '#ec4899'),
+    ('Finance', 'Financial modeling, trading tools, and fintech utilities', 'finance', 'DollarSign', '#059669'),
+    ('Education', 'Learning platforms, educational tools, and training resources', 'education', 'GraduationCap', '#7c3aed'),
+    ('Healthcare', 'Medical software, health monitoring, and healthcare IT tools', 'healthcare', 'Heart', '#dc2626'),
+    ('IoT', 'Internet of Things, sensor management, and embedded systems', 'iot', 'Cpu', '#6366f1'),
+    ('Blockchain', 'Cryptocurrency, smart contracts, and blockchain development', 'blockchain', 'Coins', '#f97316'),
+    ('AI & Machine Learning', 'Artificial intelligence, neural networks, and ML frameworks', 'ai-ml', 'Brain', '#8b5cf6'),
+    ('Utilities', 'System utilities, file management, and general-purpose tools', 'utilities', 'Wrench', '#6b7280')
+ON CONFLICT (slug) DO NOTHING;

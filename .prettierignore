@@ -1,0 +1,32 @@
+# Dependencies
+node_modules
+.next
+out
+build
+dist
+
+# Logs
+*.log
+
+# Database
+*.db
+*.sqlite
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE
+.vscode
+.idea
+
+# Environment
+.env*
+
+# Generated files
+components.json
