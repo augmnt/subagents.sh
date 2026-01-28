@@ -2,7 +2,7 @@
 
 Thank you for your interest in contributing to subagents.sh! This project is a marketplace for Claude Code sub-agents, and we welcome contributions from the community.
 
-## 🤝 Ways to Contribute
+## Ways to Contribute
 
 - **Bug Reports**: Found a bug? Please report it
 - **Feature Requests**: Have an idea? We'd love to hear it
@@ -10,7 +10,7 @@ Thank you for your interest in contributing to subagents.sh! This project is a m
 - **Documentation**: Help improve our docs and guides
 - **Sub-agent Submissions**: Share your Claude Code sub-agents
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -51,7 +51,7 @@ Thank you for your interest in contributing to subagents.sh! This project is a m
 
    Open [http://localhost:3000](http://localhost:3000) to see the app.
 
-## 🔧 Development Workflow
+## Development Workflow
 
 ### Branch Naming Convention
 
@@ -120,7 +120,7 @@ docs: update API documentation
    ```
    Then create a Pull Request on GitHub.
 
-## 🧪 Testing
+## Testing
 
 ### Running Tests
 
@@ -152,7 +152,7 @@ Place tests in:
 - `src/__tests__/integration/` - Integration tests
 - `e2e/` - End-to-end tests
 
-## 📝 Code Style
+## Code Style
 
 We use ESLint and Prettier for code formatting:
 
@@ -179,7 +179,7 @@ npm run format:check
 - Keep components small and focused
 - Use custom hooks for reusable logic
 
-## 🗃️ Database Changes
+## Database Changes
 
 When making database changes:
 
@@ -201,21 +201,21 @@ When making database changes:
 4. **Test Migration**
    Ensure your migration works on a fresh database.
 
-## 🔒 Security
+## Security
 
 - Never commit secrets or API keys
 - Use environment variables for sensitive data
 - Follow security best practices for authentication
 - Report security vulnerabilities privately to [security@augmnt.sh]
 
-## 📖 Documentation
+## Documentation
 
 - Update README.md for major changes
 - Add JSDoc comments for complex functions
 - Update API documentation for endpoint changes
 - Include examples in documentation
 
-## 🐛 Bug Reports
+## Bug Reports
 
 When reporting bugs, please include:
 
@@ -228,7 +228,7 @@ When reporting bugs, please include:
 
 Use our [bug report template](.github/ISSUE_TEMPLATE/bug_report.md).
 
-## 💡 Feature Requests
+## Feature Requests
 
 For feature requests, please include:
 
@@ -239,7 +239,7 @@ For feature requests, please include:
 
 Use our [feature request template](.github/ISSUE_TEMPLATE/feature_request.md).
 
-## 🏗️ Project Structure
+## Project Structure
 
 ```
 src/
@@ -260,16 +260,16 @@ supabase/
 └── seed/              # Database seed data
 ```
 
-## 🤔 Questions?
+## Questions?
 
 - **Discord**: [Join our community](https://discord.gg/augmnt)
 - **GitHub Discussions**: Use GitHub Discussions for questions
 - **Email**: [hello@augmnt.sh](mailto:hello@augmnt.sh)
 
-## 📄 License
+## License
 
 By contributing to subagents.sh, you agree that your contributions will be licensed under the MIT License.
 
 ---
 
-**Thank you for contributing to subagents.sh! 🚀**
+**Thank you for contributing to subagents.sh!**
