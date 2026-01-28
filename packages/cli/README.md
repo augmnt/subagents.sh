@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="../../assets/banner.png" alt="SUBAGENTS - Discover and install Claude Code subagents">
+  <img src="https://raw.githubusercontent.com/augmnt/subagents.sh/main/assets/banner.png" alt="SUBAGENTS - Discover and install Claude Code subagents">
 </p>
 
 [![npm version](https://img.shields.io/npm/v/subagents-sh)](https://npmjs.com/package/subagents-sh)
