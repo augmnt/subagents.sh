@@ -6,6 +6,7 @@ import { Content } from '@/components/subagent/content';
 import { InstallCommand } from '@/components/subagent/install-command';
 import { ToolsBadge } from '@/components/subagent/tools-badge';
 import { CategoryBadge } from '@/components/subagent/category-badge';
+import { SparklineChart } from '@/components/subagent/sparkline-chart';
 import { StructuredDataScript } from '@/components/seo/structured-data';
 import {
   generateSubagentStructuredData,
@@ -16,6 +17,10 @@ import {
   incrementViewCount,
   recordTelemetry,
 } from '@/lib/supabase/subagents';
+import {
+  getWeeklyDownloads,
+  shouldShowSparkline,
+} from '@/lib/supabase/telemetry';
 import { CopyContentButtonClient } from './copy-content-button';
 
 interface PageProps {
@@ -77,6 +82,12 @@ export default async function SubagentPage({ params }: PageProps) {
   if (!subagent) {
     notFound();
   }
+
+  // Fetch sparkline data in parallel with view tracking
+  const [showSparkline, weeklyDownloads] = await Promise.all([
+    shouldShowSparkline(subagent.id),
+    getWeeklyDownloads(subagent.id, 8),
+  ]);
 
   // Track view (fire and forget)
   incrementViewCount(subagent.id).catch(() => {});
@@ -187,6 +198,20 @@ export default async function SubagentPage({ params }: PageProps) {
               </span>
             </div>
           </div>
+
+          {/* Download Trend Sparkline */}
+          {showSparkline && weeklyDownloads.length > 0 && (
+            <>
+              <div className="h-px bg-border" />
+              <div>
+                <h3 className="text-xs uppercase tracking-wider text-text-tertiary mb-2">
+                  Download Trend
+                </h3>
+                <SparklineChart data={weeklyDownloads} />
+                <p className="text-xs text-text-tertiary mt-1">Last 8 weeks</p>
+              </div>
+            </>
+          )}
 
           {/* Tools */}
           {subagent.tools && subagent.tools.length > 0 && (
