@@ -6,6 +6,19 @@ export const metadata: Metadata = {
   title: 'Documentation',
   description:
     'Learn how to discover, install, and use Claude Code subagents to enhance your development workflow.',
+  openGraph: {
+    title: 'Documentation | Subagents.sh',
+    description:
+      'Learn how to discover, install, and use Claude Code subagents to enhance your development workflow.',
+    type: 'article',
+    url: 'https://subagents.sh/docs',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Documentation | Subagents.sh',
+    description:
+      'Learn how to discover, install, and use Claude Code subagents to enhance your development workflow.',
+  },
 };
 
 export default function DocsPage() {

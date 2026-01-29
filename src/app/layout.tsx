@@ -21,6 +21,7 @@ const jetBrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://subagents.sh'),
   title: {
     template: '%s | Subagents.sh',
     default: 'Subagents.sh - Discover Claude Code Subagents',
