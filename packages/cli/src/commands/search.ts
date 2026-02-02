@@ -108,7 +108,7 @@ export async function searchCommand(query: string): Promise<void> {
 
     console.log(chalk.dim('─'.repeat(60)));
     console.log('');
-    console.log(`  ${chalk.bold('Install:')} npx subagents-sh add ${teal('<owner/repo/name>')}`);
+    console.log(`  ${chalk.bold('Install:')} npx @augmnt-sh/subagents add ${teal('<owner/repo/name>')}`);
     console.log(`  ${chalk.bold('Browse:')}  ${teal('https://subagents.sh')}`);
     console.log('');
   } catch (err) {

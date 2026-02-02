@@ -33,7 +33,7 @@ function showBanner(): void {
 const program = new Command();
 
 program
-  .name('subagents-sh')
+  .name('subagents')
   .description('CLI for discovering and installing Claude Code subagents')
   .version(VERSION);
 
@@ -47,9 +47,9 @@ program
     'after',
     `
 Examples:
-  $ npx subagents-sh add anthropics/claude-code/backend-architect
-  $ npx subagents-sh add user/repo/agent-name
-  $ npx subagents-sh add user/repo/agent-name --local
+  $ npx @augmnt-sh/subagents add anthropics/claude-code/backend-architect
+  $ npx @augmnt-sh/subagents add user/repo/agent-name
+  $ npx @augmnt-sh/subagents add user/repo/agent-name --local
 
 Storage locations:
   Global (default)  ~/.claude/agents/   Available in all projects
@@ -74,9 +74,9 @@ program
     'after',
     `
 Examples:
-  $ npx subagents-sh list           # Show global agents (default)
-  $ npx subagents-sh list --local   # Show project agents only
-  $ npx subagents-sh list --all     # Show agents from both locations
+  $ npx @augmnt-sh/subagents list           # Show global agents (default)
+  $ npx @augmnt-sh/subagents list --local   # Show project agents only
+  $ npx @augmnt-sh/subagents list --all     # Show agents from both locations
 `
   )
   .action(async (options: ListOptions) => {
@@ -94,9 +94,9 @@ program
     'after',
     `
 Examples:
-  $ npx subagents-sh remove agent-name          # Auto-detect location
-  $ npx subagents-sh remove agent-name --global # Remove from global
-  $ npx subagents-sh remove agent-name --local  # Remove from project
+  $ npx @augmnt-sh/subagents remove agent-name          # Auto-detect location
+  $ npx @augmnt-sh/subagents remove agent-name --global # Remove from global
+  $ npx @augmnt-sh/subagents remove agent-name --local  # Remove from project
 `
   )
   .action(async (name: string, options: RemoveOptions) => {
@@ -115,9 +115,9 @@ program
     'after',
     `
 Examples:
-  $ npx subagents-sh update         # Update global agents (default)
-  $ npx subagents-sh update --local # Update project agents only
-  $ npx subagents-sh update --all   # Update all agents
+  $ npx @augmnt-sh/subagents update         # Update global agents (default)
+  $ npx @augmnt-sh/subagents update --local # Update project agents only
+  $ npx @augmnt-sh/subagents update --all   # Update all agents
 `
   )
   .action(async (options: UpdateOptions) => {
@@ -134,9 +134,9 @@ program
     'after',
     `
 Examples:
-  $ npx subagents-sh search backend
-  $ npx subagents-sh search "code review"
-  $ npx subagents-sh search testing
+  $ npx @augmnt-sh/subagents search backend
+  $ npx @augmnt-sh/subagents search "code review"
+  $ npx @augmnt-sh/subagents search testing
 `
   )
   .action(async (query: string) => {

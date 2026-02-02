@@ -25,7 +25,7 @@ export async function updateCommand(options: UpdateOptions = {}): Promise<void> 
     if (totalCount === 0) {
       p.log.info('No subagents installed in any scope.');
       p.log.info(
-        `Run ${chalk.cyan('npx subagents-sh add owner/repo/name')} to install one.`
+        `Run ${chalk.cyan('npx @augmnt-sh/subagents add owner/repo/name')} to install one.`
       );
       return;
     }
@@ -70,7 +70,7 @@ export async function updateCommand(options: UpdateOptions = {}): Promise<void> 
     if (installed.length === 0) {
       p.log.info(`No subagents installed in ${scope} scope.`);
       p.log.info(
-        `Run ${chalk.cyan('npx subagents-sh add owner/repo/name')} to install one.`
+        `Run ${chalk.cyan('npx @augmnt-sh/subagents add owner/repo/name')} to install one.`
       );
       return;
     }

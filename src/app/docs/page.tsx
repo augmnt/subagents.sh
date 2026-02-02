@@ -74,7 +74,7 @@ export default function DocsPage() {
           <h2>Getting started</h2>
           <p>Install any subagent with a single command:</p>
           <pre>
-            <code>npx subagents-sh add owner/repo/subagent-name</code>
+            <code>npx @augmnt-sh/subagents add owner/repo/subagent-name</code>
           </pre>
           <p>
             This downloads the subagent to{' '}
@@ -119,16 +119,16 @@ export default function DocsPage() {
           <pre>
             <code>
               {`# Install a subagent
-npx subagents-sh add owner/repo/name
+npx @augmnt-sh/subagents add owner/repo/name
 
 # List installed subagents
-npx subagents-sh list
+npx @augmnt-sh/subagents list
 
 # Remove a subagent
-npx subagents-sh remove owner/repo/name
+npx @augmnt-sh/subagents remove owner/repo/name
 
 # Update all subagents
-npx subagents-sh update`}
+npx @augmnt-sh/subagents update`}
             </code>
           </pre>
         </section>
@@ -243,7 +243,7 @@ Your detailed instructions here...
             <li>
               <strong>Share the install command</strong>:
               <pre>
-                <code>npx subagents-sh add your-username/your-repo/agent-name</code>
+                <code>npx @augmnt-sh/subagents add your-username/your-repo/agent-name</code>
               </pre>
             </li>
           </ol>

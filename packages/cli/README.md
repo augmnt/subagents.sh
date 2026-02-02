@@ -2,8 +2,8 @@
   <img src="https://raw.githubusercontent.com/augmnt/subagents.sh/main/assets/banner.png" alt="SUBAGENTS - Discover and install Claude Code subagents">
 </p>
 
-[![npm version](https://img.shields.io/npm/v/subagents-sh)](https://npmjs.com/package/subagents-sh)
-[![npm downloads](https://img.shields.io/npm/dm/subagents-sh)](https://npmjs.com/package/subagents-sh)
+[![npm version](https://img.shields.io/npm/v/@augmnt-sh/subagents)](https://npmjs.com/package/@augmnt-sh/subagents)
+[![npm downloads](https://img.shields.io/npm/dm/@augmnt-sh/subagents)](https://npmjs.com/package/@augmnt-sh/subagents)
 [![MIT License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 CLI for discovering and installing Claude Code subagents.
@@ -15,13 +15,13 @@ Agents are saved to `.claude/agents/` and automatically used by Claude Code when
 No installation required! Use directly with npx:
 
 ```bash
-npx subagents-sh add owner/repo/agent-name
+npx @augmnt-sh/subagents add owner/repo/agent-name
 ```
 
 Or install globally:
 
 ```bash
-npm install -g subagents-sh
+npm install -g @augmnt-sh/subagents
 ```
 
 ## Commands
@@ -29,31 +29,31 @@ npm install -g subagents-sh
 ### Add a subagent
 
 ```bash
-npx subagents-sh add owner/repo/agent-name
+npx @augmnt-sh/subagents add owner/repo/agent-name
 ```
 
 ### Search for subagents
 
 ```bash
-npx subagents-sh search <query>
+npx @augmnt-sh/subagents search <query>
 ```
 
 ### List installed subagents
 
 ```bash
-npx subagents-sh list
+npx @augmnt-sh/subagents list
 ```
 
 ### Remove a subagent
 
 ```bash
-npx subagents-sh remove <name>
+npx @augmnt-sh/subagents remove <name>
 ```
 
 ### Update all subagents
 
 ```bash
-npx subagents-sh update
+npx @augmnt-sh/subagents update
 ```
 
 ## Learn More

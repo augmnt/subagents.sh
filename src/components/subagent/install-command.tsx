@@ -24,7 +24,7 @@ export function InstallCommand({
   onCopy,
 }: InstallCommandProps) {
   const [copied, setCopied] = useState(false);
-  const command = `npx subagents-sh add ${owner}/${repo}/${slug}`;
+  const command = `npx @augmnt-sh/subagents add ${owner}/${repo}/${slug}`;
 
   const handleCopy = async () => {
     try {

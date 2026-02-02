@@ -1,10 +1,10 @@
 {
-  "name": "subagents-sh",
+  "name": "@augmnt-sh/subagents",
   "version": "0.2.0",
   "description": "CLI for discovering and installing Claude Code subagents",
   "type": "module",
   "bin": {
-    "subagents-sh": "./dist/index.js"
+    "subagents": "./dist/index.js"
   },
   "main": "./dist/index.js",
   "files": [

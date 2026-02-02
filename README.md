@@ -17,7 +17,7 @@ A discovery platform for [Claude Code](https://claude.ai/code) sub-agents. Brows
 Install any subagent with a single command:
 
 ```bash
-npx subagents-sh add owner/repo/agent-name
+npx @augmnt-sh/subagents add owner/repo/agent-name
 ```
 
 The agent is saved to `.claude/agents/` and automatically used by Claude Code when relevant.
@@ -26,10 +26,10 @@ The agent is saved to `.claude/agents/` and automatically used by Claude Code wh
 
 | Command | Description |
 |---------|-------------|
-| `npx subagents-sh add owner/repo/name` | Install a subagent |
-| `npx subagents-sh list` | List installed subagents |
-| `npx subagents-sh remove name` | Remove a subagent |
-| `npx subagents-sh update` | Update all subagents |
+| `npx @augmnt-sh/subagents add owner/repo/name` | Install a subagent |
+| `npx @augmnt-sh/subagents list` | List installed subagents |
+| `npx @augmnt-sh/subagents remove name` | Remove a subagent |
+| `npx @augmnt-sh/subagents update` | Update all subagents |
 
 ---
 
@@ -58,7 +58,7 @@ Host it on GitHub in one of these locations:
 Users install directly from your repo:
 
 ```bash
-npx subagents-sh add your-username/your-repo/agent-name
+npx @augmnt-sh/subagents add your-username/your-repo/agent-name
 ```
 
 Your agent appears on the [leaderboard](https://subagents.sh) as people install it.

@@ -96,7 +96,7 @@ export async function listCommand(options: ListOptions = {}): Promise<void> {
   if (totalCount === 0) {
     p.log.info('No subagents installed.');
     p.log.info(
-      `Run ${chalk.cyan('npx subagents-sh add owner/repo/name')} to install one.`
+      `Run ${chalk.cyan('npx @augmnt-sh/subagents add owner/repo/name')} to install one.`
     );
     return;
   }
