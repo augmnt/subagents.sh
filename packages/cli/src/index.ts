@@ -3,13 +3,15 @@
 import { Command } from 'commander';
 import chalk from 'chalk';
 import * as p from '@clack/prompts';
+import { createRequire } from 'module';
 import { addCommand, AddOptions } from './commands/add.js';
 import { listCommand, ListOptions } from './commands/list.js';
 import { removeCommand, RemoveOptions } from './commands/remove.js';
 import { updateCommand, UpdateOptions } from './commands/update.js';
 import { searchCommand } from './commands/search.js';
 
-const VERSION = '0.1.0';
+const require = createRequire(import.meta.url);
+const { version: VERSION } = require('../package.json');
 
 // Muted teal color matching website accent
 const teal = chalk.hex('#14b8a6');
