@@ -86,12 +86,12 @@ export default async function SubagentPage({ params }: PageProps) {
   // Fetch sparkline data in parallel with view tracking
   const [showSparkline, weeklyDownloads] = await Promise.all([
     shouldShowSparkline(subagent.id),
-    getWeeklyDownloads(subagent.id, 8),
+    getWeeklyDownloads(`${owner}/${repo}/${slug}`, 8),
   ]);
 
   // Track view (fire and forget)
   incrementViewCount(subagent.id).catch(() => {});
-  recordTelemetry(subagent.id, 'view').catch(() => {});
+  recordTelemetry(`${owner}/${repo}/${slug}`, 'view').catch(() => {});
 
   return (
     <>
